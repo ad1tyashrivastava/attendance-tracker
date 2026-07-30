@@ -1,4 +1,5 @@
-# Attendance Register
+# Attendance Register 
+By Aditya Shrivastava MBA TECH CE 2nd Year 
 
 > Not a form that stores numbers — a tool that answers the only question a student actually has: *can I skip tomorrow's lecture?*
 
