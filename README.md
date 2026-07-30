@@ -15,7 +15,6 @@ That third number is what makes the answer real. Without it, "you can skip 4 mor
 Plain HTML, CSS and JavaScript. No frameworks, no npm, no build step.
 
 **Live link:** `https://<ad1tyashrivastava>.github.io/attendance-tracker/`
-*(replace with your real link once GitHub Pages is turned on)*
 
 ## Design direction: muster roll
 
