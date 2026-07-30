@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Attendance Register</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header class="app-header">
+    <h1 class="app-title">Attendance Register</h1>
+
+    <div class="header-controls">
+      <input
+        type="search"
+        id="searchInput"
+        class="text-input search-input"
+        placeholder="Search subjects…"
+        aria-label="Search subjects by name">
+
+      <label class="control-label" for="thresholdSelect">Pass mark</label>
+      <select id="thresholdSelect" class="select-input" aria-label="Attendance threshold">
+        <option value="0.65">65%</option>
+        <option value="0.70">70%</option>
+        <option value="0.75">75%</option>
+        <option value="0.80">80%</option>
+        <option value="0.85">85%</option>
+      </select>
+
+      <button type="button" id="themeToggle" class="button button-quiet">Dark mode</button>
+    </div>
+  </header>
+
+  <!-- Shown only if localStorage is unavailable (private browsing, full quota). -->
+  <p id="storageWarning" class="storage-warning" hidden>
+    Changes won't be saved in this browser
+  </p>
+
+  <!-- ===== SUMMARY STRIP ===== -->
+  <section id="summaryStrip" class="summary-strip" aria-live="polite" aria-label="Overall attendance summary">
+    <p class="summary-block">
+      <span class="summary-label">Overall</span>
+      <span class="summary-value num" id="summaryOverall">—</span>
+    </p>
+    <p class="summary-block">
+      <span class="summary-label">Safe</span>
+      <span class="summary-value num" id="summarySafe">0 of 0</span>
+    </p>
+    <p class="summary-block">
+      <span class="summary-label">Short</span>
+      <span class="summary-value num" id="summaryShort">0</span>
+    </p>
+  </section>
+
+  <!-- ===== FILTER CHIPS ===== -->
+  <div class="filter-row" id="filterRow" role="group" aria-label="Filter subjects">
+    <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" class="chip" data-filter="safe" aria-pressed="false">Safe</button>
+    <button type="button" class="chip" data-filter="short" aria-pressed="false">Short</button>
+  </div>
+
+  <!-- ===== CARD GRID ===== -->
+  <main>
+    <div id="cardList" class="card-grid"></div>
+    <p id="emptyState" class="empty-state" hidden>Add your first subject to start tracking.</p>
+  </main>
+
+  <!-- ===== ADD SUBJECT FORM ===== -->
+  <form id="addForm" class="add-form" novalidate>
+    <div class="field">
+      <label class="control-label" for="nameInput">Subject name</label>
+      <input type="text" id="nameInput" class="text-input" maxlength="60" autocomplete="off">
+    </div>
+
+    <div class="field field-small">
+      <label class="control-label" for="attendedInput">Attended</label>
+      <input type="number" id="attendedInput" class="text-input num" min="0" step="1" placeholder="0">
+    </div>
+
+    <div class="field field-small">
+      <label class="control-label" for="conductedInput">Conducted</label>
+      <input type="number" id="conductedInput" class="text-input num" min="0" step="1" placeholder="0">
+    </div>
+
+    <div class="field field-small">
+      <label class="control-label" for="plannedInput">Term total</label>
+      <input type="number" id="plannedInput" class="text-input num" min="0" step="1" placeholder="0">
+    </div>
+
+    <button type="submit" class="button button-solid">Add subject</button>
+
+    <p id="addError" class="error-text" role="alert"></p>
+  </form>
+
+  <script src="script.js"></script>
+</body>
+</html>
