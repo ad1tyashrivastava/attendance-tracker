@@ -1,0 +1,517 @@
+/* ==========================================================
+   ATTENDANCE REGISTER — muster roll
+   Paper, ruled lines, navy ink, one red stamp.
+   ========================================================== */
+
+/* ===== 1. THEME VARIABLES ===== */
+
+:root {
+  --paper:  #EEF1F4;
+  --card:   #FFFFFF;
+  --ink:    #1B2A4A;
+  --rule:   #C8D2DC;
+  --danger: #C0342B;
+  --safe:   #2F7A55;
+  --mark:   #F2D14E;
+}
+
+[data-theme="dark"] {
+  --paper:  #141A24;
+  --card:   #1D2530;
+  --ink:    #E4EAF1;
+  --rule:   #33404F;
+  --danger: #E8645A;
+  --safe:   #52B183;
+  --mark:   #F2D14E;
+}
+
+/* ===== 2. BASE ===== */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: "Inter Tight", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+
+  /* The ruled paper. Pure CSS, no image file. */
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(
+    to bottom, transparent 0 31px, var(--rule) 31px 32px
+  );
+}
+
+/* Every number on screen uses the mono face so digits keep the same width
+   and don't jitter when a count changes. */
+.num {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/* ===== 3. SHARED CONTROLS ===== */
+
+.control-label {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.text-input,
+.select-input {
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  background-color: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 9px 10px;
+  min-height: 44px;
+  width: 100%;
+}
+
+.button {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button-solid {
+  color: var(--paper);
+  background-color: var(--ink);
+  border: 1px solid var(--ink);
+}
+
+.button-quiet {
+  color: var(--ink);
+  background-color: var(--card);
+  border: 1px solid var(--rule);
+}
+
+.button-quiet:hover,
+.button-solid:hover {
+  opacity: 0.85;
+}
+
+/* A small text-only button: Edit, Delete, the minus signs. */
+.link-button {
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: none;
+  border: none;
+  padding: 4px 6px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.error-text {
+  flex-basis: 100%;
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--danger);
+  min-height: 18px;
+}
+
+/* ===== 4. HEADER ===== */
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.app-title {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: 30px;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.header-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  width: 180px;
+}
+
+.select-input {
+  width: auto;
+}
+
+.storage-warning {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 4px;
+  background-color: var(--card);
+}
+
+/* ===== 5. SUMMARY STRIP ===== */
+
+.summary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin: 16px 0;
+  padding: 14px 16px;
+  background-color: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.summary-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+}
+
+.summary-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.summary-value {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* ===== 6. FILTER CHIPS ===== */
+
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chip {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  background-color: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 8px 16px;
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.chip.is-active {
+  color: var(--paper);
+  background-color: var(--ink);
+  border-color: var(--ink);
+}
+
+/* ===== 7. CARD GRID ===== */
+
+/* This single line does most of the responsive work: the browser fits as many
+   280px columns as it can and reflows on its own as the window changes. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  position: relative;
+  padding: 16px;
+  background-color: var(--card);
+  border: 1px solid var(--rule);
+  border-left: 5px solid var(--safe);
+  border-radius: 6px;
+}
+
+.card.is-short {
+  border-left-color: var(--danger);
+}
+
+.card.is-not-started {
+  border-left-color: var(--rule);
+}
+
+.subject-name {
+  font-family: "Inter Tight", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 70px 8px 0;      /* space kept clear for the stamp */
+
+  /* A very long subject name gets cut with an ellipsis;
+     the full name stays available in the title attribute. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The signature element: a rubber stamp, not a UI badge. */
+.stamp {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--danger);
+  border: 2px solid var(--danger);
+  border-radius: 4px;
+  padding: 2px 7px;
+  opacity: 0.85;
+  transform: rotate(-8deg);
+}
+
+.percent {
+  font-family: "Fraunces", Georgia, serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+
+.percent-sign {
+  font-size: 22px;
+  opacity: 0.7;
+}
+
+/* ===== 8. PROGRESS BAR ===== */
+
+.bar {
+  height: 10px;
+  background-color: var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background-color: var(--safe);
+}
+
+.card.is-short .bar-fill {
+  background-color: var(--danger);
+}
+
+/* ===== 9. CARD BODY ===== */
+
+/* The three figures: attended, conducted, term total. */
+.counts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.count-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+.count-row {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.count-value {
+  font-size: 18px;
+}
+
+.status-word {
+  margin: 0 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card.is-short .status-word {
+  color: var(--danger);
+}
+
+.advice {
+  margin: 0;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.card.is-short .advice {
+  background-color: transparent;
+  box-shadow: inset 3px 0 0 var(--mark);
+  padding-left: 10px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.card-actions .button {
+  flex: 1;
+}
+
+.card-minor {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+.confirm-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ===== 10. INLINE EDIT ===== */
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.edit-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.edit-field .text-input {
+  min-height: 40px;
+  padding: 6px 8px;
+}
+
+.edit-hint {
+  margin: 0 0 8px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ===== 11. EMPTY STATE ===== */
+
+.empty-state {
+  margin: 0;
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 16px;
+  background-color: var(--card);
+  border: 1px dashed var(--rule);
+  border-radius: 6px;
+}
+
+/* ===== 12. ADD FORM ===== */
+
+.add-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+  padding: 16px;
+  background-color: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 200px;
+}
+
+.field-small {
+  flex: 0 1 110px;
+}
+
+/* ===== 13. MOBILE ===== */
+
+@media (max-width: 600px) {
+  body {
+    padding: 14px;
+  }
+
+  .app-header,
+  .header-controls,
+  .summary-strip,
+  .add-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-title {
+    font-size: 24px;
+  }
+
+  .search-input,
+  .select-input {
+    width: 100%;
+  }
+
+  .summary-strip {
+    gap: 12px;
+  }
+
+  .field,
+  .field-small {
+    flex: 1 1 auto;
+  }
+}
