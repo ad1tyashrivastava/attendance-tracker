@@ -14,20 +14,8 @@ That third number is what makes the answer real. Without it, "you can skip 4 mor
 
 Plain HTML, CSS and JavaScript. No frameworks, no npm, no build step.
 
-**Live link:** `https://<your-username>.github.io/attendance-tracker/`
+**Live link:** `https://<ad1tyashrivastava>.github.io/attendance-tracker/`
 *(replace with your real link once GitHub Pages is turned on)*
-
----
-
-## Screenshots
-
-<!-- Take these three, save them in a screenshots/ folder, then uncomment -->
-<!-- ![Desktop, light theme](screenshots/desktop-light.png) -->
-<!-- ![Mobile, dark theme](screenshots/mobile-dark.png) -->
-<!-- ![A subject below the threshold, with the SHORT stamp](screenshots/short-stamp.png) -->
-<!-- ![Lighthouse scores](screenshots/lighthouse.png) -->
-
----
 
 ## Design direction: muster roll
 
